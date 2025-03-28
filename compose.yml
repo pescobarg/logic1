@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: miusuario
+      POSTGRES_PASSWORD: miclave
+      POSTGRES_DB: mibasedatos
+    ports:
+      - "5432:5432"
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  api:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8081:8080"  
+    depends_on:
+      - postgres
+      - rabbitmq
